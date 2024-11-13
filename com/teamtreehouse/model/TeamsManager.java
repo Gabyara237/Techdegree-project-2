@@ -10,9 +10,6 @@ public class TeamsManager {
         return allTeams;
     }
 
-    public int size(){
-        return allTeams.size();
-    }
     public void addTeamToAllTeams(Team team){
 
         allTeams.add(team);
