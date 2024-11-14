@@ -28,7 +28,7 @@ public class Prompter {
         nameTeam = scanner.nextLine();
         System.out.print("What is the coach name? ");
         nameCoach = scanner.nextLine();
-        description = "Team " + nameTeam + " coached by " + nameCoach + " added. ";
+        description = "Team " + nameTeam + " coached by " + nameCoach + " added.";
         Team newTeam = new Team(nameTeam, nameCoach, team, description);
         allTeams.addTeamToAllTeams(newTeam);
 
@@ -38,13 +38,13 @@ public class Prompter {
 
     public Team displayTeams(TeamsManager allTeams) {
 
-        Set<Team> teams = allTeams.getAllTeams();
+        TreeSet<Team> teams = new TreeSet<>(allTeams.getAllTeams());
         List<Team> teamsList = new ArrayList<>(teams);
         String teamSelected;
         int num = 0;
         int option;
 
-        System.out.printf("Available teams: %n ");
+        System.out.printf("Available teams: %n");
 
         for (Team team : teams) {
             num++;
@@ -88,7 +88,7 @@ public class Prompter {
             } else {
                 experience = "inexperienced";
             }
-            System.out.printf("%d.) %s %s (%s inches - %s ) %n ", num, player.getFirstName(), player.getLastName(), player.getHeightInInches(), experience);
+            System.out.printf("%d.) %s %s (%s inches - %s )%n", num, player.getFirstName(), player.getLastName(), player.getHeightInInches(), experience);
         }
         System.out.printf("%nSelect the player to add to the team: ");
         option = scanner.nextInt();

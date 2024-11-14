@@ -2,7 +2,7 @@ package com.teamtreehouse.model;
 
 import java.util.Set;
 
-public class Team {
+public class Team implements Comparable<Team>{
     private String mTeamName;
     private String mCoachName;
     private Set<Player> mTeamPlayers;
@@ -39,16 +39,20 @@ public class Team {
 
     }
 
+
     public boolean completeTeam(){
 
         int sizeTeam = mTeamPlayers.size();
-
         return sizeTeam >= 11;
-
     }
 
     public void removePlayerToTeam(Player playerToRemove) {
         mTeamPlayers.remove(playerToRemove);
         prompter.playerRemoved();
+    }
+
+    @Override
+    public int compareTo(Team o) {
+        return this.mTeamName.compareTo(o.mTeamName);
     }
 }
