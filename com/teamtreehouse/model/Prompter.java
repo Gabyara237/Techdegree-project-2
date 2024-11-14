@@ -59,9 +59,9 @@ public class Prompter {
         return teamsList.get(option - 1);
     }
 
-    public void displayPlayers(List<Player> listPlayer){
-        int option;
+    public Player displayPlayers(List<Player> listPlayer, String action){
         int num = 0;
+        int option;
         String experience;
         System.out.printf("List of players: %n%n ");
         for (Player player : listPlayer) {
@@ -71,30 +71,16 @@ public class Prompter {
             } else {
                 experience = "inexperienced";
             }
-            System.out.printf("%d.) %s %s (%s inches - %s ) %n ", num, player.getFirstName(), player.getLastName(), player.getHeightInInches(), experience);
+            System.out.printf("%d.) %s %s (%s inches - %s ) %n ", num, player.getLastName(), player.getFirstName() , player.getHeightInInches(), experience);
         }
-    }
-
-    public Player displayPlayers() {
-        Player[] players = Players.load();
-        int option;
-        int num = 0;
-        String experience;
-        System.out.printf("List of players: %n%n ");
-        for (Player player : players) {
-            num++;
-            if (player.isPreviousExperience()) {
-                experience = "experienced";
-            } else {
-                experience = "inexperienced";
-            }
-            System.out.printf("%d.) %s %s (%s inches - %s )%n", num, player.getFirstName(), player.getLastName(), player.getHeightInInches(), experience);
-        }
-        System.out.printf("%nSelect the player to add to the team: ");
+        System.out.printf("%nSelect the player to %s in the team: ",action);
         option = scanner.nextInt();
         scanner.nextLine();
-        return players[option - 1];
+        return listPlayer.get(option - 1);
+
+
     }
+    
 
     public void AddedPlayer() {
         System.out.printf("Player successfully added to the team!%n");
@@ -112,16 +98,6 @@ public class Prompter {
         }
     }
 
-    public Player displayPlayers(Team teamToRemovePlayer) {
-        int option;
-        List<Player> listTeamPlayer= new ArrayList<>(teamToRemovePlayer.getTeamPlayers());
-        displayPlayers(listTeamPlayer);
-        System.out.printf("%nSelect the player to remove in the team: ");
-        option = scanner.nextInt();
-        scanner.nextLine();
-        return listTeamPlayer.get(option - 1);
-
-    }
 
     public void playerRemoved() {
         System.out.printf("Player successfully removed from the team!.%n");

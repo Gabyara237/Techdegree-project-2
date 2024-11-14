@@ -1,7 +1,6 @@
 import com.teamtreehouse.model.*;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class LeagueManager {
 
@@ -34,7 +33,11 @@ public class LeagueManager {
                         Team team = prompter.displayTeams(allTeams);
                         Player player;
                         if (!team.completeTeam()) {
-                            player = prompter.displayPlayers();
+
+                            TreeSet<Player> treeSetListPlayer= new TreeSet<>(List.of(Players.load()));
+                            List<Player> players = new ArrayList<>(treeSetListPlayer) ;
+                            action="add";
+                            player = prompter.displayPlayers(players, action);
                             if (!playersNoAvailable.contains(player)) {
                                 playersNoAvailable.add(player);
                                 team.addPlayerToTeam(player);
@@ -55,7 +58,10 @@ public class LeagueManager {
                         Player playerToRemove;
                         teamToRemovePlayer = prompter.displayTeams(allTeams);
                         if (!teamToRemovePlayer.getTeamPlayers().isEmpty()) {
-                            playerToRemove = prompter.displayPlayers(teamToRemovePlayer);
+                            action= "remove";
+                            TreeSet<Player> treeSetListTeamPlayer= new TreeSet<>(teamToRemovePlayer.getTeamPlayers());
+                            List<Player> listTeamPlayer= new ArrayList<>(treeSetListTeamPlayer);
+                            playerToRemove = prompter.displayPlayers(listTeamPlayer, action);
                             teamToRemovePlayer.removePlayerToTeam(playerToRemove);
                         } else {
                             prompter.noPlayersToRemove(teamToRemovePlayer.getTeamName());
