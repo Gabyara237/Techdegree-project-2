@@ -2,11 +2,12 @@ package com.teamtreehouse.model;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 public class TeamsManager {
-    private Set<Team> allTeams = new HashSet<>();
+    private TreeSet<Team> allTeams = new TreeSet<>();
 
-    public Set<Team> getAllTeams() {
+    public TreeSet<Team> getAllTeams() {
         return allTeams;
     }
 

@@ -18,6 +18,7 @@ public class LeagueManager {
         String choice;
         Set<Player> playersNoAvailable = new HashSet<>();
         String action;
+        Map<String, TreeSet<Player>> reportMap;
 
         do {
             choice = prompter.displayMenu();
@@ -65,6 +66,22 @@ public class LeagueManager {
                             teamToRemovePlayer.removePlayerToTeam(playerToRemove);
                         } else {
                             prompter.noPlayersToRemove(teamToRemovePlayer.getTeamName());
+                        }
+                    }
+                    break;
+                case "report":
+                    if(allTeams.getAllTeams().isEmpty()){
+                        action="report";
+                        prompter.teamsNotAvailable(action);
+                    }else {
+                        Team teamToReportPlayers;
+                        Player playerToRemove;
+                        teamToReportPlayers = prompter.displayTeams(allTeams);
+                        if (!teamToReportPlayers.getTeamPlayers().isEmpty()) {
+                            reportMap= teamToReportPlayers.createReport(teamToReportPlayers);
+                            prompter.displayReport(reportMap);
+                        } else {
+                            prompter.noPlayersToReport(teamToReportPlayers.getTeamName());
                         }
                     }
                     break;

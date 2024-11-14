@@ -12,6 +12,7 @@ public class Prompter {
                 "Create - Create a new team. %n " +
                 "Add - Add a player to a team. %n " +
                 "Remove - Remove a player from a team.%n " +
+                "Report - View a report of a team by height" +
                 "Quit - Exits the program. %n%n Select an option: ");
 
         option = scanner.nextLine();
@@ -22,7 +23,7 @@ public class Prompter {
         String nameTeam;
         String nameCoach;
         String description;
-        Set<Player> team = new HashSet<>();
+        TreeSet<Player> team = new TreeSet<>();
 
         System.out.print("What is the team name?  ");
         nameTeam = scanner.nextLine();
@@ -38,7 +39,7 @@ public class Prompter {
 
     public Team displayTeams(TeamsManager allTeams) {
 
-        TreeSet<Team> teams = new TreeSet<>(allTeams.getAllTeams());
+        TreeSet<Team> teams = allTeams.getAllTeams();
         List<Team> teamsList = new ArrayList<>(teams);
         String teamSelected;
         int num = 0;
@@ -80,7 +81,7 @@ public class Prompter {
 
 
     }
-    
+
 
     public void AddedPlayer() {
         System.out.printf("Player successfully added to the team!%n");
@@ -109,5 +110,33 @@ public class Prompter {
 
     public void teamsNotAvailable(String action){
         System.out.printf("%nThere are no teams available to %s players. %n%n", action);
+    }
+
+    public void displayReport(Map<String, TreeSet<Player>> reportMap) {
+        int num=0;
+        int numGroup=0;
+        String experience;
+        for(Map.Entry<String,TreeSet<Player>> group : reportMap.entrySet()){
+            numGroup++;
+            String range= group.getKey();
+            TreeSet<Player> listPlayers = group.getValue();
+
+            System.out.printf("%n*****  Group %d - Range %s inches  ***** %n%n",numGroup,range);
+            for (Player player : listPlayers) {
+                num++;
+                if (player.isPreviousExperience()) {
+                    experience = "experienced";
+                } else {
+                    experience = "inexperienced";
+                }
+                System.out.printf("%d.) %s %s (%s inches - %s) %n", num, player.getLastName(), player.getFirstName() , player.getHeightInInches(), experience);
+            }
+            num=0;
+        }
+        System.out.printf("%n");
+    }
+
+    public void noPlayersToReport(String teamName) {
+        System.out.printf("you can't get a report from the team %s players. %n%n",teamName);
     }
 }
