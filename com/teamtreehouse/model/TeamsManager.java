@@ -14,4 +14,5 @@ public class TeamsManager {
 
         allTeams.add(team);
     }
+
 }

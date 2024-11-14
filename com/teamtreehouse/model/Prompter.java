@@ -5,17 +5,20 @@ import java.util.*;
 public class Prompter {
 
     Scanner scanner = new Scanner(System.in);
-    TeamsManager allTeams = new TeamsManager();
 
     public String displayMenu() {
         String option;
-        System.out.printf("Menu %n %n Create - Create a new team. %n Add - Add a player to a team. %n Quit - Exits the program. %n%n Select an option: ");
+        System.out.printf("Menu %n %n " +
+                "Create - Create a new team. %n " +
+                "Add - Add a player to a team. %n " +
+                "Remove - Remove a player from a team.%n " +
+                "Quit - Exits the program. %n%n Select an option: ");
 
         option = scanner.nextLine();
         return option.toLowerCase();
     }
 
-    public void createNewTeam() {
+    public void createNewTeam(TeamsManager allTeams) {
         String nameTeam;
         String nameCoach;
         String description;
@@ -33,10 +36,11 @@ public class Prompter {
 
     }
 
-    public Team displayTeams() {
+    public Team displayTeams(TeamsManager allTeams) {
 
         Set<Team> teams = allTeams.getAllTeams();
         List<Team> teamsList = new ArrayList<>(teams);
+        String teamSelected;
         int num = 0;
         int option;
 
@@ -46,9 +50,29 @@ public class Prompter {
             num++;
             System.out.printf("%d.) %s %n", num, team.getDescription());
         }
-        System.out.printf("%n%n Select an option: ");
+        System.out.printf("%nSelect an option: ");
         option = scanner.nextInt();
+        scanner.nextLine();
+        int numPlayers = teamsList.get(option - 1).getTeamPlayers().size();
+        System.out.printf("%nThe selected team has %d players. %n",numPlayers);
+
         return teamsList.get(option - 1);
+    }
+
+    public void displayPlayers(List<Player> listPlayer){
+        int option;
+        int num = 0;
+        String experience;
+        System.out.printf("List of players: %n%n ");
+        for (Player player : listPlayer) {
+            num++;
+            if (player.isPreviousExperience()) {
+                experience = "experienced";
+            } else {
+                experience = "inexperienced";
+            }
+            System.out.printf("%d.) %s %s (%s inches - %s ) %n ", num, player.getFirstName(), player.getLastName(), player.getHeightInInches(), experience);
+        }
     }
 
     public Player displayPlayers() {
@@ -86,5 +110,28 @@ public class Prompter {
         } else {
             System.out.println("Player not available to be added to the team");
         }
+    }
+
+    public Player displayPlayers(Team teamToRemovePlayer) {
+        int option;
+        List<Player> listTeamPlayer= new ArrayList<>(teamToRemovePlayer.getTeamPlayers());
+        displayPlayers(listTeamPlayer);
+        System.out.printf("%nSelect the player to remove in the team: ");
+        option = scanner.nextInt();
+        scanner.nextLine();
+        return listTeamPlayer.get(option - 1);
+
+    }
+
+    public void playerRemoved() {
+        System.out.printf("Player successfully removed from the team!.%n");
+    }
+
+    public void noPlayersToRemove(String teamName) {
+        System.out.printf("You cannot remove players from the team %s. %n%n", teamName);
+    }
+
+    public void teamsNotAvailable(String action){
+        System.out.printf("%nThere are no teams available to %s players. %n%n", action);
     }
 }

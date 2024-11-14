@@ -47,5 +47,8 @@ public class Team {
 
     }
 
-
+    public void removePlayerToTeam(Player playerToRemove) {
+        mTeamPlayers.remove(playerToRemove);
+        prompter.playerRemoved();
+    }
 }
