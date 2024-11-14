@@ -29,7 +29,7 @@ public class LeagueManager {
                     break;
                 case "add":
                     if(allTeams.getAllTeams().isEmpty()){
-                        action="add";
+                        action="add players";
                         prompter.teamsNotAvailable(action);
                     }else {
                         Team team = prompter.displayTeams(allTeams);
@@ -53,7 +53,7 @@ public class LeagueManager {
                     break;
                 case "remove":
                     if(allTeams.getAllTeams().isEmpty()){
-                        action="remove";
+                        action="to remove players";
                         prompter.teamsNotAvailable(action);
                     }else {
                         Team teamToRemovePlayer;
@@ -72,11 +72,10 @@ public class LeagueManager {
                     break;
                 case "report":
                     if(allTeams.getAllTeams().isEmpty()){
-                        action="report";
+                        action="generate player reports";
                         prompter.teamsNotAvailable(action);
                     }else {
                         Team teamToReportPlayers;
-                        Player playerToRemove;
                         teamToReportPlayers = prompter.displayTeams(allTeams);
                         if (!teamToReportPlayers.getTeamPlayers().isEmpty()) {
                             reportMap= teamToReportPlayers.createReport(teamToReportPlayers);
@@ -88,13 +87,30 @@ public class LeagueManager {
                     break;
                 case "balance":
                     if(allTeams.getAllTeams().isEmpty()){
-                        action="balance";
+                        action="generate teams balance";
                         prompter.teamsNotAvailable(action);
                     }else {
                         balanceMap= allTeams.createBalance(allTeams.getAllTeams());
                         prompter.displayBalance(balanceMap);
                     }
+                    break;
+                case "roster":
+                    if(allTeams.getAllTeams().isEmpty()){
+                        action="view roster";
+                        prompter.teamsNotAvailable(action);
+                    }else {
+                        action="roster";
+                        Team teamToRoster;
+                        teamToRoster = prompter.displayTeams(allTeams);
+                        if (!teamToRoster.getTeamPlayers().isEmpty()) {
+                            TreeSet<Player> treeSetListTeamPlayer= teamToRoster.getTeamPlayers();
+                            List<Player> listTeamPlayer= new ArrayList<>(treeSetListTeamPlayer);
+                            prompter.displayPlayers(listTeamPlayer,teamToRoster.getTeamName(),action);
 
+                        } else {
+                            prompter.noPlayers(teamToRoster.getTeamName());
+                        }
+                    }
                     break;
                 default:
                     break;

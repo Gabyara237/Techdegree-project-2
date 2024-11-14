@@ -8,12 +8,13 @@ public class Prompter {
 
     public String displayMenu() {
         String option;
-        System.out.printf("Menu %n %n " +
+        System.out.printf("%nMenu %n %n " +
                 "Create - Create a new team. %n " +
                 "Add - Add a player to a team. %n " +
                 "Remove - Remove a player from a team.%n " +
                 "Report - View a report of a team by height.%n " +
                 "Balance - View the League Balance Report.%n "+
+                "Roster - View roster.%n "+
                 "Quit - Exits the program. %n%n Select an option: ");
 
         option = scanner.nextLine();
@@ -62,19 +63,8 @@ public class Prompter {
     }
 
     public Player displayPlayers(List<Player> listPlayer, String action){
-        int num = 0;
         int option;
-        String experience;
-        System.out.printf("List of players: %n%n ");
-        for (Player player : listPlayer) {
-            num++;
-            if (player.isPreviousExperience()) {
-                experience = "experienced";
-            } else {
-                experience = "inexperienced";
-            }
-            System.out.printf("%d.) %s %s (%s inches - %s ) %n ", num, player.getLastName(), player.getFirstName() , player.getHeightInInches(), experience);
-        }
+        displayPlayers( listPlayer, "", action);
         System.out.printf("%nSelect the player to %s in the team: ",action);
         option = scanner.nextInt();
         scanner.nextLine();
@@ -106,49 +96,63 @@ public class Prompter {
     }
 
     public void noPlayersToRemove(String teamName) {
-        System.out.printf("You cannot remove players from the team %s. %n%n", teamName);
+        System.out.printf("Players cannot be removed from the team %s. %n%n", teamName);
+    }
+    public void noPlayers(String teamName) {
+        System.out.printf("The selected team does not have players to display the roster %s. %n%n", teamName);
+    }
+
+    public void noPlayersToReport(String teamName) {
+        System.out.printf("No player report can be generated for de team %s %n",teamName);
     }
 
     public void teamsNotAvailable(String action){
-        System.out.printf("%nThere are no teams available to %s players. %n%n", action);
+        System.out.printf("%nThere are no teams available to %s. %n%n", action);
     }
 
     public void displayReport(Map<String, TreeSet<Player>> reportMap) {
-        int num=0;
+
         int numGroup=0;
-        String experience;
+        String action="report";
         String range;
         for(Map.Entry<String,TreeSet<Player>> group : reportMap.entrySet()){
             numGroup++;
             range= group.getKey();
             TreeSet<Player> listPlayers = group.getValue();
-
+            List<Player> listTeamPlayer= new ArrayList<>(listPlayers);
             System.out.printf("%n*****  Group %d - Range %s inches  ***** %n%n",numGroup,range);
-            for (Player player : listPlayers) {
-                num++;
-                if (player.isPreviousExperience()) {
-                    experience = "experienced";
-                } else {
-                    experience = "inexperienced";
-                }
-                System.out.printf("%d.) %s %s (%s inches - %s) %n", num, player.getLastName(), player.getFirstName() , player.getHeightInInches(), experience);
-            }
-            num=0;
+            displayPlayers( listTeamPlayer, "", action);
         }
         System.out.printf("%n");
     }
 
-    public void noPlayersToReport(String teamName) {
-        System.out.printf("you can't get a report from the team %s players. %n%n",teamName);
-    }
-
     public void displayBalance(Map<String, List<Integer>> balanceMap) {
         String teamName="";
-        List<Integer> listCounts= Arrays.asList(0,0);
         for(Map.Entry<String, List<Integer>> team : balanceMap.entrySet()){
             teamName= team.getKey();
-            listCounts= team.getValue();
+            List<Integer> listCounts= team.getValue();
             System.out.printf("%n%n *** Team: %s *** %n%nTotal number of players: %d %nExperienced players: %d %nInexperienced players: %d %n",teamName,listCounts.get(0)+listCounts.get(1), listCounts.get(0),listCounts.get(1));
+        }
+    }
+
+    public void displayPlayers(List<Player> listPlayers, String teamName, String action) {
+        int num = 0;
+        String experience;
+
+        if("roster".equals(action)){
+            System.out.printf("%n**** Team %s ****%n ",teamName);
+        }
+        if("add".equals(action)) {
+            System.out.printf("List of players: %n%n ");
+        }
+        for (Player player : listPlayers) {
+            num++;
+            if (player.isPreviousExperience()) {
+                experience = "experienced";
+            } else {
+                experience = "inexperienced";
+            }
+            System.out.printf("%d.) %s %s (%s inches - %s ) %n ", num, player.getLastName(), player.getFirstName() , player.getHeightInInches(), experience);
         }
     }
 }

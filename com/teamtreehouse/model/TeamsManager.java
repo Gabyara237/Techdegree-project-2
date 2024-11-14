@@ -18,10 +18,11 @@ public class TeamsManager {
         TreeSet<Player> teamPlayers;
         Map<String, List<Integer>>  balanceMap = new TreeMap<>();
         String nameTeam;
-        int numExperienced= 0;
-        int numInexperienced= 0;
 
         for(Team team: allTeams){
+            int numExperienced= 0;
+            int numInexperienced= 0;
+
             nameTeam = team.getTeamName();
             teamPlayers= team.getTeamPlayers();
             List<Integer> counts = Arrays.asList(0,0);
