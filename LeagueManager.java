@@ -19,6 +19,7 @@ public class LeagueManager {
         Set<Player> playersNoAvailable = new HashSet<>();
         String action;
         Map<String, TreeSet<Player>> reportMap;
+        Map<String, List<Integer>> balanceMap;
 
         do {
             choice = prompter.displayMenu();
@@ -84,6 +85,16 @@ public class LeagueManager {
                             prompter.noPlayersToReport(teamToReportPlayers.getTeamName());
                         }
                     }
+                    break;
+                case "balance":
+                    if(allTeams.getAllTeams().isEmpty()){
+                        action="balance";
+                        prompter.teamsNotAvailable(action);
+                    }else {
+                        balanceMap= allTeams.createBalance(allTeams.getAllTeams());
+                        prompter.displayBalance(balanceMap);
+                    }
+
                     break;
                 default:
                     break;

@@ -12,7 +12,8 @@ public class Prompter {
                 "Create - Create a new team. %n " +
                 "Add - Add a player to a team. %n " +
                 "Remove - Remove a player from a team.%n " +
-                "Report - View a report of a team by height" +
+                "Report - View a report of a team by height.%n " +
+                "Balance - View the League Balance Report.%n "+
                 "Quit - Exits the program. %n%n Select an option: ");
 
         option = scanner.nextLine();
@@ -116,9 +117,10 @@ public class Prompter {
         int num=0;
         int numGroup=0;
         String experience;
+        String range;
         for(Map.Entry<String,TreeSet<Player>> group : reportMap.entrySet()){
             numGroup++;
-            String range= group.getKey();
+            range= group.getKey();
             TreeSet<Player> listPlayers = group.getValue();
 
             System.out.printf("%n*****  Group %d - Range %s inches  ***** %n%n",numGroup,range);
@@ -138,5 +140,15 @@ public class Prompter {
 
     public void noPlayersToReport(String teamName) {
         System.out.printf("you can't get a report from the team %s players. %n%n",teamName);
+    }
+
+    public void displayBalance(Map<String, List<Integer>> balanceMap) {
+        String teamName="";
+        List<Integer> listCounts= Arrays.asList(0,0);
+        for(Map.Entry<String, List<Integer>> team : balanceMap.entrySet()){
+            teamName= team.getKey();
+            listCounts= team.getValue();
+            System.out.printf("%n%n *** Team: %s *** %n%nTotal number of players: %d %nExperienced players: %d %nInexperienced players: %d %n",teamName,listCounts.get(0)+listCounts.get(1), listCounts.get(0),listCounts.get(1));
+        }
     }
 }

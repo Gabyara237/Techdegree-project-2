@@ -28,7 +28,7 @@ public class Team implements Comparable<Team> {
         return mCoachName;
     }
 
-    public Set<Player> getTeamPlayers() {
+    public TreeSet<Player> getTeamPlayers() {
         return mTeamPlayers;
     }
 

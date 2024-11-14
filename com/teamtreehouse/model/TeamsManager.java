@@ -1,8 +1,6 @@
 package com.teamtreehouse.model;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 public class TeamsManager {
     private TreeSet<Team> allTeams = new TreeSet<>();
@@ -14,6 +12,33 @@ public class TeamsManager {
     public void addTeamToAllTeams(Team team){
 
         allTeams.add(team);
+    }
+
+    public Map<String, List<Integer>> createBalance(TreeSet<Team>  allTeams){
+        TreeSet<Player> teamPlayers;
+        Map<String, List<Integer>>  balanceMap = new TreeMap<>();
+        String nameTeam;
+        int numExperienced= 0;
+        int numInexperienced= 0;
+
+        for(Team team: allTeams){
+            nameTeam = team.getTeamName();
+            teamPlayers= team.getTeamPlayers();
+            List<Integer> counts = Arrays.asList(0,0);
+
+            for (Player player: teamPlayers){
+                if (player.isPreviousExperience()){
+                    numExperienced++;
+                }else {
+                    numInexperienced++;
+                }
+            }
+            counts.set(0,numExperienced);
+            counts.set(1,numInexperienced);
+            balanceMap.put(nameTeam,counts);
+
+        }
+        return balanceMap;
     }
 
 }
