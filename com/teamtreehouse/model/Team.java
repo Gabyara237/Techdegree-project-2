@@ -35,7 +35,6 @@ public class Team implements Comparable<Team> {
     // Method for adding a player to a team
     public void addPlayerToTeam(Player player) {
         mTeamPlayers.add(player);
-        prompter.AddedPlayer();
     }
 
     // Method that validates if the player has all 11 players.
@@ -47,14 +46,14 @@ public class Team implements Comparable<Team> {
     // Method that removes players from the team
     public void removePlayerToTeam(Player playerToRemove, Team team, String action, WaitingListManager waitList) {
         mTeamPlayers.remove(playerToRemove);
-        prompter.playerRemoved(team,action,waitList);
+        prompter.playerRemoved(team, action, waitList);
 
     }
 
     // Method to create players reports
-    public Map<String,Object> createReport(Team team){
+    public Map<String, Object> createReport(Team team) {
 
-        Map<String,Object> mapReportsMap = new HashMap<>();
+        Map<String, Object> mapReportsMap = new HashMap<>();
         Map<Integer, Integer> reportMapByHeight = new TreeMap<>();
         Map<String, TreeSet<Player>> reportMap = new TreeMap<>();
         TreeSet<Player> group1 = new TreeSet<>();
@@ -62,28 +61,28 @@ public class Team implements Comparable<Team> {
         int heightPlayer;
         TreeSet<Player> listPlayers = team.mTeamPlayers;
 
-        reportMap.put("35-41",group1);
-        reportMap.put("42-47",group2);
+        reportMap.put("35-41", group1);
+        reportMap.put("42-47", group2);
 
-        for( Player player: listPlayers ){
+        for (Player player : listPlayers) {
 
-            heightPlayer=player.getHeightInInches();
-            if(reportMapByHeight.containsKey(heightPlayer)){
-                int count = reportMapByHeight.get(heightPlayer)+1;
-                reportMapByHeight.put(heightPlayer,count);
-            }else{
+            heightPlayer = player.getHeightInInches();
+            if (reportMapByHeight.containsKey(heightPlayer)) {
+                int count = reportMapByHeight.get(heightPlayer) + 1;
+                reportMapByHeight.put(heightPlayer, count);
+            } else {
 
-                reportMapByHeight.put(heightPlayer,1);
+                reportMapByHeight.put(heightPlayer, 1);
             }
 
-            if (heightPlayer > 41){
+            if (heightPlayer > 41) {
                 group2.add(player);
-            }else{
+            } else {
                 group1.add(player);
             }
         }
-        mapReportsMap.put("reportMap",reportMap);
-        mapReportsMap.put("reportMapByHeight",reportMapByHeight);
+        mapReportsMap.put("reportMap", reportMap);
+        mapReportsMap.put("reportMapByHeight", reportMapByHeight);
         return mapReportsMap;
     }
 
@@ -94,18 +93,18 @@ public class Team implements Comparable<Team> {
 
     // Method that allows the creation of teams automatically
     public void addPlayersAutomatically(TreeSet<Player> teamsPlayers) {
-        TreeSet<Player> treeSetListPlayer= new TreeSet<>(List.of(Players.load()));
-        List<Player> players = new ArrayList<>(treeSetListPlayer) ;
+        TreeSet<Player> treeSetListPlayer = new TreeSet<>(List.of(Players.load()));
+        List<Player> players = new ArrayList<>(treeSetListPlayer);
         Random random = new Random();
         int numRandom;
         Set<Integer> notAvailable = new HashSet<>();
-        do{
+        do {
             numRandom = random.nextInt(players.size());
-            if(!notAvailable.contains(numRandom) ){
+            if (!notAvailable.contains(numRandom)) {
                 notAvailable.add(numRandom);
                 teamsPlayers.add(players.get(numRandom));
             }
-        }while(teamsPlayers.size()<11);
+        } while (teamsPlayers.size() < 11);
 
     }
 }

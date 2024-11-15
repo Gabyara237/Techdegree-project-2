@@ -14,16 +14,17 @@ public class Prompter {
                 "Add - Add a player to a team. %n " +
                 "Remove - Remove a player from a team.%n " +
                 "Report - View a report of a team by height.%n " +
-                "Balance - View the League Balance Report.%n "+
-                "Roster - View roster.%n "+
-                "Build - Automatically Build Teams.%n "+
-                "Wait - Add player to player waiting list.%n "+
-                "Rotate - Remove a player from the team and add a player from the waiting list. %n "+
+                "Balance - View the League Balance Report.%n " +
+                "Roster - View roster.%n " +
+                "Build - Automatically Build Teams.%n " +
+                "Wait - Add player to player waiting list.%n " +
+                "Rotate - Remove a player from the team and add a player from the waiting list. %n " +
                 "Quit - Exits the program. %n%n Select an option: ");
 
         option = scanner.nextLine();
         return option.toLowerCase();
     }
+
     //Method for creating new teams
     public void createNewTeam(TeamsManager allTeams) {
         String nameTeam;
@@ -37,18 +38,19 @@ public class Prompter {
         nameCoach = scanner.nextLine();
         description = "Team " + capitalizeInput(nameTeam) + " coached by " + capitalizeInput(nameCoach) + " added.";
         Team newTeam = new Team(capitalizeInput(nameTeam), capitalizeInput(nameCoach), team, description);
-        boolean added= allTeams.addTeamToAllTeams(newTeam);
+        boolean added = allTeams.addTeamToAllTeams(newTeam);
 
         if (added) {
             System.out.printf("%n%n  %s %n%n", description);
-        }else{
+        } else {
             System.out.printf("Team already exists. Try adding another team. %n");
         }
     }
-    //Auxiliary method to display teams
-    public void displayTeams(List<Team> allTeams,String action){
 
-        if (action.equals("build")){
+    //Auxiliary method to display teams
+    public void displayTeams(List<Team> allTeams, String action) {
+
+        if (action.equals("build")) {
             System.out.printf("Successfully created teams! %n");
         }
         int num = 0;
@@ -95,11 +97,11 @@ public class Prompter {
     }
 
     // Method to display players
-    public Player displayPlayers(List<Player> listPlayer, String action){
-        int option=0;
-        displayPlayers( listPlayer, "", action);
+    public Player displayPlayers(List<Player> listPlayer, String action) {
+        int option = 0;
+        displayPlayers(listPlayer, "", action);
 
-        boolean validInput=false;
+        boolean validInput = false;
         while (!validInput) {
             try {
                 System.out.printf("%nSelect the player to %s in the team: ", action);
@@ -121,7 +123,6 @@ public class Prompter {
 
 
     }
-
 
 
     public void playerRemoved(Team team, String action, WaitingListManager waitList) {
@@ -151,24 +152,30 @@ public class Prompter {
             }
         }
     }
+
     //-------- Methods for displaying messages ---------
     public void noPlayersToRemove(String teamName) {
         System.out.printf("Players cannot be removed from the team %s. %n%n", teamName);
     }
+
+    public void playerAlreadyTeam(String firstName, String teamName) {
+        System.out.printf("Player %s is already in team %s.%n", firstName, teamName);
+    }
+
     public void noPlayers(String teamName) {
         System.out.printf("The selected team does not have players to display the roster %s. %n%n", teamName);
     }
 
     public void noPlayersToReport(String teamName) {
-        System.out.printf("No player report can be generated for de team %s %n",teamName);
+        System.out.printf("No player report can be generated for de team %s %n", teamName);
     }
 
-    public void teamsNotAvailable(String action){
+    public void teamsNotAvailable(String action) {
         System.out.printf("%nThere are no teams available to %s. %n%n", action);
     }
 
     public void validationOfTeamsCreated() {
-        System.out.printf("%nThere must be no previously created teams to use this option.%n%n" );
+        System.out.printf("%nThere must be no previously created teams to use this option.%n%n");
     }
 
     public void limitTeamsReached() {
@@ -179,9 +186,9 @@ public class Prompter {
         System.out.printf("Invalid option. %n");
     }
 
-    public void AddedPlayer() {
+    public void AddedPlayer(String firstName, String teamName) {
 
-        System.out.printf("Player successfully added to the team!%n");
+        System.out.printf("Player %s successfully added to the team %s! %n", firstName, teamName);
     }
 
     public void playerLimitReached() {
@@ -199,19 +206,19 @@ public class Prompter {
     //Methods to display player reports
     public void displayReport(Map<String, TreeSet<Player>> reportMap, Map<Integer, Integer> reportMapByHeight) {
 
-        int numGroup=0;
-        String action="report";
+        int numGroup = 0;
+        String action = "report";
         String range;
-        for(Map.Entry<String,TreeSet<Player>> group : reportMap.entrySet()){
+        for (Map.Entry<String, TreeSet<Player>> group : reportMap.entrySet()) {
             numGroup++;
-            range= group.getKey();
+            range = group.getKey();
             TreeSet<Player> listPlayers = group.getValue();
-            List<Player> listTeamPlayer= new ArrayList<>(listPlayers);
-            System.out.printf("%nGroup %d - Range %s inches %n%n",numGroup,range);
-            displayPlayers( listTeamPlayer, "", action);
+            List<Player> listTeamPlayer = new ArrayList<>(listPlayers);
+            System.out.printf("%nGroup %d - Range %s inches %n%n", numGroup, range);
+            displayPlayers(listTeamPlayer, "", action);
         }
         System.out.printf("%nPlayer counter by height in the team: %n%n");
-        for(Map.Entry<Integer,Integer> height : reportMapByHeight.entrySet()){
+        for (Map.Entry<Integer, Integer> height : reportMapByHeight.entrySet()) {
             System.out.printf("%d inches: %d %n", height.getKey(), height.getValue());
         }
         System.out.printf("%n");
@@ -220,14 +227,14 @@ public class Prompter {
     //Methods to display player balance
     public void displayBalance(Map<String, List<Integer>> balanceMap) {
         String teamName;
-        for(Map.Entry<String, List<Integer>> team : balanceMap.entrySet()){
-            teamName= team.getKey();
-            List<Integer> listCounts= team.getValue();
+        for (Map.Entry<String, List<Integer>> team : balanceMap.entrySet()) {
+            teamName = team.getKey();
+            List<Integer> listCounts = team.getValue();
             int totalExpert = listCounts.get(0);
             int total = totalExpert + listCounts.get(1);
-            int percentageExperienced= (int)(((double)totalExpert/total)*100);
+            int percentageExperienced = (int) (((double) totalExpert / total) * 100);
 
-            System.out.printf("%n%n *** Team: %s *** %n%nTotal number of players: %d %nExperienced players: %d %nInexperienced players: %d %nPercentage of experienced players: %d%% %n",teamName, total, totalExpert,listCounts.get(1),percentageExperienced );
+            System.out.printf("%n%n *** Team: %s *** %n%nTotal number of players: %d %nExperienced players: %d %nInexperienced players: %d %nPercentage of experienced players: %d%% %n", teamName, total, totalExpert, listCounts.get(1), percentageExperienced);
 
         }
     }
@@ -237,10 +244,10 @@ public class Prompter {
         int num = 0;
         String experience;
 
-        if("roster".equals(action)){
-            System.out.printf("%n**** Team %s ****%n ",teamName);
+        if ("roster".equals(action)) {
+            System.out.printf("%n**** Team %s ****%n ", teamName);
         }
-        if("add".equals(action)) {
+        if ("add".equals(action)) {
             System.out.printf("List of players: %n%n ");
         }
         for (Player player : listPlayers) {
@@ -250,7 +257,7 @@ public class Prompter {
             } else {
                 experience = "inexperienced";
             }
-            System.out.printf("%d.) %s %s (%s inches - %s ) %n", num, player.getLastName(), player.getFirstName() , player.getHeightInInches(), experience);
+            System.out.printf("%d.) %s %s (%s inches - %s ) %n", num, player.getLastName(), player.getFirstName(), player.getHeightInInches(), experience);
         }
     }
 
@@ -303,18 +310,19 @@ public class Prompter {
 
         previousExperience = optionExperience == 1;
         Player player = new Player(capitalizeInput(firstName), capitalizeInput(lastName), heightInInches, previousExperience);
-         if ((waitList.getWaitList().contains(player))){
-             System.out.printf("%n Player not created, already exists in the waiting list.%n");
-         }else {
-             waitList.getWaitList().add(player);
+        if ((waitList.getWaitList().contains(player))) {
+            System.out.printf("%n Player not created, already exists in the waiting list.%n");
+        } else {
+            waitList.getWaitList().add(player);
 
-             System.out.printf("%n Player %s %s successfully created.%n", player.getFirstName(), player.getLastName());
-         }
+            System.out.printf("%n Player %s %s successfully created.%n", player.getFirstName(), player.getLastName());
+        }
     }
+
     //Method for adding a new player from the waiting list to the team
-    private void addPlayerFromWaitingList(WaitingListManager waitList, Team team){
+    private void addPlayerFromWaitingList(WaitingListManager waitList, Team team) {
         Player player = waitList.getWaitList().removeFirst();
-        System.out.printf("The player %s %s, who was next on the waiting list, has been successfully added to the team.%n", player.getFirstName(),player.getLastName());
+        System.out.printf("The player %s %s, who was next on the waiting list, has been successfully added to the team.%n", player.getFirstName(), player.getLastName());
 
     }
 
@@ -325,5 +333,6 @@ public class Prompter {
         }
         return input.substring(0, 1).toUpperCase() + input.substring(1).toLowerCase();
     }
+
 
 }
