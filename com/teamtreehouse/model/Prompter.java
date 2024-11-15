@@ -149,7 +149,7 @@ public class Prompter {
         System.out.printf("%nThere are no teams available to %s. %n%n", action);
     }
 
-    public void displayReport(Map<String, TreeSet<Player>> reportMap) {
+    public void displayReport(Map<String, TreeSet<Player>> reportMap, Map<Integer, Integer> reportMapByHeight) {
 
         int numGroup=0;
         String action="report";
@@ -159,8 +159,12 @@ public class Prompter {
             range= group.getKey();
             TreeSet<Player> listPlayers = group.getValue();
             List<Player> listTeamPlayer= new ArrayList<>(listPlayers);
-            System.out.printf("%n*****  Group %d - Range %s inches  ***** %n%n",numGroup,range);
+            System.out.printf("%nGroup %d - Range %s inches %n%n",numGroup,range);
             displayPlayers( listTeamPlayer, "", action);
+        }
+        System.out.printf("%nPlayer counter by height in the team: %n%n");
+        for(Map.Entry<Integer,Integer> height : reportMapByHeight.entrySet()){
+            System.out.printf("%d inches: %d %n", height.getKey(), height.getValue());
         }
         System.out.printf("%n");
     }

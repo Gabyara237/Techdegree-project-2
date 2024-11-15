@@ -18,6 +18,8 @@ public class LeagueManager {
         String choice;
         Set<Player> playersNoAvailable = new HashSet<>();
         String action;
+        Map<Integer, Integer> reportMapByHeight;
+        Map<String,Object> mapReportsMap;
         Map<String, TreeSet<Player>> reportMap;
         Map<String, List<Integer>> balanceMap;
         List<Player> waitListSet = new ArrayList<>();
@@ -89,8 +91,11 @@ public class LeagueManager {
                         Team teamToReportPlayers;
                         teamToReportPlayers = prompter.displayTeams(allTeams);
                         if (!teamToReportPlayers.getTeamPlayers().isEmpty()) {
-                            reportMap= teamToReportPlayers.createReport(teamToReportPlayers);
-                            prompter.displayReport(reportMap);
+                            mapReportsMap= teamToReportPlayers.createReport(teamToReportPlayers);
+
+                            reportMapByHeight = (Map<Integer, Integer>) mapReportsMap.get("reportMapByHeight");
+                            reportMap= (Map<String, TreeSet<Player>>) mapReportsMap.get("reportMap");
+                            prompter.displayReport(reportMap, reportMapByHeight);
                         } else {
                             prompter.noPlayersToReport(teamToReportPlayers.getTeamName());
                         }

@@ -49,24 +49,41 @@ public class Team implements Comparable<Team> {
 
     }
 
-    public Map<String, TreeSet<Player>> createReport(Team team){
+    public Map<String,Object> createReport(Team team){
 
+        Map<String,Object> mapReportsMap = new HashMap<>();
+        Map<Integer, Integer> reportMapByHeight = new TreeMap<>();
         Map<String, TreeSet<Player>> reportMap = new TreeMap<>();
         TreeSet<Player> group1 = new TreeSet<>();
         TreeSet<Player> group2 = new TreeSet<>();
+        int heightPlayer;
         TreeSet<Player> listPlayers = team.mTeamPlayers;
+
 
         reportMap.put("35-41",group1);
         reportMap.put("42-47",group2);
 
+
         for( Player player: listPlayers ){
-            if (player.getHeightInInches()> 41){
+
+            heightPlayer=player.getHeightInInches();
+            if(reportMapByHeight.containsKey(heightPlayer)){
+                int count = reportMapByHeight.get(heightPlayer)+1;
+                reportMapByHeight.put(heightPlayer,count);
+            }else{
+
+                reportMapByHeight.put(heightPlayer,1);
+            }
+
+            if (heightPlayer > 41){
                 group2.add(player);
             }else{
                 group1.add(player);
             }
         }
-        return reportMap;
+        mapReportsMap.put("reportMap",reportMap);
+        mapReportsMap.put("reportMapByHeight",reportMapByHeight);
+        return mapReportsMap;
     }
 
     @Override
