@@ -10,6 +10,7 @@ public class Player implements Comparable<Player>, Serializable {
   private int heightInInches;
   private boolean previousExperience;
 
+  // Constructor
   public Player(String firstName, String lastName, int heightInInches, boolean previousExperience) {
     this.firstName = firstName;
     this.lastName = lastName;
@@ -17,7 +18,7 @@ public class Player implements Comparable<Player>, Serializable {
     this.previousExperience = previousExperience;
   }
 
-
+// ------- Getters-----------
   public String getFirstName() {
     return firstName;
   }
@@ -34,6 +35,7 @@ public class Player implements Comparable<Player>, Serializable {
     return previousExperience;
   }
 
+  // Method that allows the correct organization of the players in alphabetical order.
   @Override
   public int compareTo(Player other) {
     // We always want to sort by last name then first name\

@@ -6,7 +6,7 @@ import java.util.*;
 public class TeamsManager {
     private final TreeSet<Team> allTeams = new TreeSet<>();
 
-
+    // Team building method
     public void teamBuilding() {
 
         List<String> teamsName = Arrays.asList("Falcons"," Bears", "Sharks");
@@ -20,16 +20,18 @@ public class TeamsManager {
 
         }
     }
-
+    // Method to obtain the list of all teams
     public TreeSet<Team> getAllTeams() {
         return allTeams;
     }
 
-    public void addTeamToAllTeams(Team team){
+    //Method that adds a created team to the list of all the teams.
+    public boolean addTeamToAllTeams(Team team){
 
-        allTeams.add(team);
+        return allTeams.add(team);
     }
 
+    //Method in charge of creating the balance of all teams
     public Map<String, List<Integer>> createBalance(TreeSet<Team>  allTeams){
         TreeSet<Player> teamPlayers;
         Map<String, List<Integer>>  balanceMap = new TreeMap<>();

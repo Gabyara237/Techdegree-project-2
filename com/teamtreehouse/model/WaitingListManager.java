@@ -6,6 +6,7 @@ import java.util.List;
 public class WaitingListManager {
     private final List<Player> mWaitList;
 
+    // Constructor
     public WaitingListManager(List<Player> waitList) {
         mWaitList = waitList;
     }

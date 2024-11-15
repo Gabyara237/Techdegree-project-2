@@ -10,6 +10,7 @@ public class Team implements Comparable<Team> {
 
     Prompter prompter = new Prompter();
 
+    // Constructor
     public Team(String teamName, String coachName, TreeSet<Player> teamPlayers, String description) {
         mTeamName = teamName;
         mTeamPlayers = teamPlayers;
@@ -17,12 +18,10 @@ public class Team implements Comparable<Team> {
         mDescription = description;
     }
 
+    // ------ Getters ------
+
     public String getTeamName() {
         return mTeamName;
-    }
-
-    public String getCoachName() {
-        return mCoachName;
     }
 
     public TreeSet<Player> getTeamPlayers() {
@@ -33,22 +32,26 @@ public class Team implements Comparable<Team> {
         return mDescription;
     }
 
+    // Method for adding a player to a team
     public void addPlayerToTeam(Player player) {
         mTeamPlayers.add(player);
         prompter.AddedPlayer();
     }
 
+    // Method that validates if the player has all 11 players.
     public boolean completeTeam() {
         int sizeTeam = mTeamPlayers.size();
         return sizeTeam >= 11;
     }
 
+    // Method that removes players from the team
     public void removePlayerToTeam(Player playerToRemove, Team team, String action, WaitingListManager waitList) {
         mTeamPlayers.remove(playerToRemove);
         prompter.playerRemoved(team,action,waitList);
 
     }
 
+    // Method to create players reports
     public Map<String,Object> createReport(Team team){
 
         Map<String,Object> mapReportsMap = new HashMap<>();
@@ -59,10 +62,8 @@ public class Team implements Comparable<Team> {
         int heightPlayer;
         TreeSet<Player> listPlayers = team.mTeamPlayers;
 
-
         reportMap.put("35-41",group1);
         reportMap.put("42-47",group2);
-
 
         for( Player player: listPlayers ){
 
@@ -91,7 +92,7 @@ public class Team implements Comparable<Team> {
         return this.mTeamName.compareTo(o.mTeamName);
     }
 
-
+    // Method that allows the creation of teams automatically
     public void addPlayersAutomatically(TreeSet<Player> teamsPlayers) {
         TreeSet<Player> treeSetListPlayer= new TreeSet<>(List.of(Players.load()));
         List<Player> players = new ArrayList<>(treeSetListPlayer) ;

@@ -24,7 +24,7 @@ public class Prompter {
         option = scanner.nextLine();
         return option.toLowerCase();
     }
-
+    //Method for creating new teams
     public void createNewTeam(TeamsManager allTeams) {
         String nameTeam;
         String nameCoach;
@@ -37,12 +37,15 @@ public class Prompter {
         nameCoach = scanner.nextLine();
         description = "Team " + capitalizeInput(nameTeam) + " coached by " + capitalizeInput(nameCoach) + " added.";
         Team newTeam = new Team(capitalizeInput(nameTeam), capitalizeInput(nameCoach), team, description);
-        allTeams.addTeamToAllTeams(newTeam);
+        boolean added= allTeams.addTeamToAllTeams(newTeam);
 
-        System.out.printf("%n%n  %s %n%n", description);
-
+        if (added) {
+            System.out.printf("%n%n  %s %n%n", description);
+        }else{
+            System.out.printf("Team already exists. Try adding another team. %n");
+        }
     }
-
+    //Auxiliary method to display teams
     public void displayTeams(List<Team> allTeams,String action){
 
         if (action.equals("build")){
@@ -55,6 +58,7 @@ public class Prompter {
         }
     }
 
+    // method to display teams
     public Team displayTeams(TeamsManager allTeams) {
 
         TreeSet<Team> teams = allTeams.getAllTeams();
@@ -90,6 +94,7 @@ public class Prompter {
         return selectedTeam;
     }
 
+    // Method to display players
     public Player displayPlayers(List<Player> listPlayer, String action){
         int option=0;
         displayPlayers( listPlayer, "", action);
@@ -117,22 +122,6 @@ public class Prompter {
 
     }
 
-
-    public void AddedPlayer() {
-        System.out.printf("Player successfully added to the team!%n");
-    }
-
-    public void playerLimitReached() {
-        System.out.println("The selected team already has the 11 players allowed.");
-    }
-
-    public void playerNoAvailable(boolean isInTheTeam) {
-        if (isInTheTeam) {
-            System.out.println("The selected player is already in the team. %n%n");
-        } else {
-            System.out.println("Player not available to be added to the team");
-        }
-    }
 
 
     public void playerRemoved(Team team, String action, WaitingListManager waitList) {
@@ -162,7 +151,7 @@ public class Prompter {
             }
         }
     }
-
+    //-------- Methods for displaying messages ---------
     public void noPlayersToRemove(String teamName) {
         System.out.printf("Players cannot be removed from the team %s. %n%n", teamName);
     }
@@ -178,6 +167,36 @@ public class Prompter {
         System.out.printf("%nThere are no teams available to %s. %n%n", action);
     }
 
+    public void validationOfTeamsCreated() {
+        System.out.printf("%nThere must be no previously created teams to use this option.%n%n" );
+    }
+
+    public void limitTeamsReached() {
+        System.out.printf("%nLimit teams reached. %nYou cannot add more teams to the league. There are already 3 teams created.%n");
+    }
+
+    public void invalidOption() {
+        System.out.printf("Invalid option. %n");
+    }
+
+    public void AddedPlayer() {
+
+        System.out.printf("Player successfully added to the team!%n");
+    }
+
+    public void playerLimitReached() {
+        System.out.println("The selected team already has the 11 players allowed.");
+    }
+
+    public void playerNoAvailable(boolean isInTheTeam) {
+        if (isInTheTeam) {
+            System.out.println("The selected player is already in the team. %n%n");
+        } else {
+            System.out.println("Player not available to be added to the team");
+        }
+    }
+
+    //Methods to display player reports
     public void displayReport(Map<String, TreeSet<Player>> reportMap, Map<Integer, Integer> reportMapByHeight) {
 
         int numGroup=0;
@@ -198,6 +217,7 @@ public class Prompter {
         System.out.printf("%n");
     }
 
+    //Methods to display player balance
     public void displayBalance(Map<String, List<Integer>> balanceMap) {
         String teamName;
         for(Map.Entry<String, List<Integer>> team : balanceMap.entrySet()){
@@ -212,6 +232,7 @@ public class Prompter {
         }
     }
 
+    // Auxiliary Methods to display players
     public void displayPlayers(List<Player> listPlayers, String teamName, String action) {
         int num = 0;
         String experience;
@@ -233,14 +254,7 @@ public class Prompter {
         }
     }
 
-    public void validationOfTeamsCreated() {
-        System.out.printf("%nThere must be no previously created teams to use this option.%n%n" );
-    }
-
-    public void limitTeamsReached() {
-        System.out.printf("%nLimit teams reached. %nYou cannot add more teams to the league. There are already 3 teams created.%n");
-    }
-
+    // Method for adding a new player to the waiting list
     public void addPlayerToWaitingList(WaitingListManager waitList) {
         String firstName;
         String lastName;
@@ -289,18 +303,22 @@ public class Prompter {
 
         previousExperience = optionExperience == 1;
         Player player = new Player(capitalizeInput(firstName), capitalizeInput(lastName), heightInInches, previousExperience);
-        waitList.getWaitList().add(player);
-        System.out.printf("%n Player %s %s successfully created.%n", player.getFirstName(), player.getLastName());
-    }
+         if ((waitList.getWaitList().contains(player))){
+             System.out.printf("%n Player not created, already exists in the waiting list.%n");
+         }else {
+             waitList.getWaitList().add(player);
 
+             System.out.printf("%n Player %s %s successfully created.%n", player.getFirstName(), player.getLastName());
+         }
+    }
+    //Method for adding a new player from the waiting list to the team
     private void addPlayerFromWaitingList(WaitingListManager waitList, Team team){
-        TreeSet<Player> teamPlayers= team.getTeamPlayers();
         Player player = waitList.getWaitList().removeFirst();
-        teamPlayers.add(player);
         System.out.printf("The player %s %s, who was next on the waiting list, has been successfully added to the team.%n", player.getFirstName(),player.getLastName());
 
     }
 
+    //Method to capitalize user input.
     public static String capitalizeInput(String input) {
         if (input == null || input.isEmpty()) {
             return input;
@@ -308,7 +326,4 @@ public class Prompter {
         return input.substring(0, 1).toUpperCase() + input.substring(1).toLowerCase();
     }
 
-    public void invalidOption() {
-        System.out.printf("Invalid option. %n");
-    }
 }

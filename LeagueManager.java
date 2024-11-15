@@ -13,6 +13,7 @@ public class LeagueManager {
 
     }
 
+    //Method that handles the options entered by the user from the menu.
     public static void choiceMenu(TeamsManager allTeams) {
         Prompter prompter = new Prompter();
         String choice;
