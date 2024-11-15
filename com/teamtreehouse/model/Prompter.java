@@ -16,6 +16,7 @@ public class Prompter {
                 "Balance - View the League Balance Report.%n "+
                 "Roster - View roster.%n "+
                 "Build - Automatically Build Teams.%n "+
+                "Wait - Add player to player waiting list"+
                 "Quit - Exits the program. %n%n Select an option: ");
 
         option = scanner.nextLine();
@@ -40,29 +41,35 @@ public class Prompter {
 
     }
 
-    public Team displayTeams(TeamsManager allTeams, String action) {
+    public void displayTeams(List<Team> allTeams,String action){
+
+        if (action.equals("build")){
+            System.out.printf("Successfully created teams! %n");
+        }
+        int num = 0;
+        for (Team team : allTeams) {
+            num++;
+            System.out.printf("%d.) %s %n", num, team.getDescription());
+        }
+    }
+
+    public Team displayTeams(TeamsManager allTeams) {
 
         TreeSet<Team> teams = allTeams.getAllTeams();
         List<Team> teamsList = new ArrayList<>(teams);
         String teamSelected;
         int num = 0;
         int option;
-        if (action.equals("build")){
-            System.out.printf("Successfully created teams! %n");
-        }else {
-            System.out.printf("Available teams: %n");
-        }
-        for (Team team : teams) {
-            num++;
-            System.out.printf("%d.) %s %n", num, team.getDescription());
-        }
-        System.out.printf("%nSelect an option: ");
-        option = scanner.nextInt();
-        scanner.nextLine();
-        int numPlayers = teamsList.get(option - 1).getTeamPlayers().size();
-        System.out.printf("%nThe selected team has %d players. %n",numPlayers);
 
-        return teamsList.get(option - 1);
+            System.out.printf("Available teams: %n");
+            displayTeams(teamsList,"");
+            System.out.printf("%nSelect an option: ");
+            option = scanner.nextInt();
+            scanner.nextLine();
+            int numPlayers = teamsList.get(option - 1).getTeamPlayers().size();
+            System.out.printf("%nThe selected team has %d players. %n", numPlayers);
+
+            return teamsList.get(option - 1);
     }
 
     public Player displayPlayers(List<Player> listPlayer, String action){
@@ -160,6 +167,41 @@ public class Prompter {
     }
 
     public void validationOfTeamsCreated() {
-        System.out.print("%nThere must be no previously created teams to use this option.%n%n" );
+        System.out.printf("%nThere must be no previously created teams to use this option.%n%n" );
+    }
+
+    public void limitTeamsReached() {
+        System.out.printf("%nLimit teams reached. %nYou cannot add more teams to the league. There are already 3 teams created");
+    }
+
+    public void addPlayerToWaitingList(WaitingListManager waitList) {
+        String firstName;
+        String lastName;
+        int heightInInches;
+        int attempts=0;
+        int optionExperience;
+        boolean previousExperience;
+        System.out.print("What is the player's first name? ");
+        firstName = scanner.nextLine();
+        System.out.print("What is the player's last name? ");
+        lastName = scanner.nextLine();
+        System.out.print("What is the player's height in inches? ");
+        heightInInches = scanner.nextInt();
+        System.out.printf("The player is: %n 1.) Experienced. %n 2)Inexperienced. %n Select an option: ");
+        do {
+            if (attempts>0){
+                System.out.printf("Option does not exist, select an option from 1 to 2. %n");
+            }
+
+            optionExperience = scanner.nextInt();
+            attempts++;
+        }while(optionExperience< 1 || optionExperience > 2 );
+        scanner.nextLine();
+
+        previousExperience= optionExperience == 1;
+
+        Player player = new Player(firstName,lastName,heightInInches,previousExperience );
+        waitList.getWaitList().add(player);
+        System.out.printf("%n Player %s %s successfully created" ,player.getFirstName(), player.getLastName());
     }
 }

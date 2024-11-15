@@ -1,10 +1,10 @@
 package com.teamtreehouse.model;
 
-import java.lang.reflect.Array;
+
 import java.util.*;
 
 public class TeamsManager {
-    private TreeSet<Team> allTeams = new TreeSet<>();
+    private final TreeSet<Team> allTeams = new TreeSet<>();
 
 
     public void teamBuilding() {
@@ -12,7 +12,7 @@ public class TeamsManager {
         List<String> teamsName = Arrays.asList("Falcons"," Bears", "Sharks");
         List<String> coachName = Arrays.asList("Max", "Sam", "Zoe");
         for (int i=0; i<3; i++ ) {
-            TreeSet<Player> teamsPlayers= new TreeSet<Player>();
+            TreeSet<Player> teamsPlayers= new TreeSet<>();
             Team team = new Team(teamsName.get(i),coachName.get(i),teamsPlayers, "Team " + teamsName.get(i) + " coached by " + coachName.get(i) + " created.");
             team.addPlayersAutomatically(teamsPlayers);
 

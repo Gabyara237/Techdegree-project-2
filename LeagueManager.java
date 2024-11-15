@@ -20,6 +20,8 @@ public class LeagueManager {
         String action;
         Map<String, TreeSet<Player>> reportMap;
         Map<String, List<Integer>> balanceMap;
+        TreeSet<Player> waitListSet = new TreeSet<>();
+        WaitingListManager waitList = new WaitingListManager(waitListSet);
 
         do {
             choice = prompter.displayMenu();
@@ -28,27 +30,32 @@ public class LeagueManager {
                     prompter.createNewTeam(allTeams);
                     break;
                 case "add":
-                    if(allTeams.getAllTeams().isEmpty()){
-                        action="add players";
-                        prompter.teamsNotAvailable(action);
-                    }else {
-                        Team team = prompter.displayTeams(allTeams,"");
-                        Player player;
-                        if (!team.completeTeam()) {
+                    if(allTeams.getAllTeams().size()<3) {
+                        if (allTeams.getAllTeams().isEmpty()) {
+                            action = "add players";
+                            prompter.teamsNotAvailable(action);
+                        } else {
+                            Team team = prompter.displayTeams(allTeams);
+                            Player player;
+                            if (!team.completeTeam()) {
 
-                            TreeSet<Player> treeSetListPlayer= new TreeSet<>(List.of(Players.load()));
-                            List<Player> players = new ArrayList<>(treeSetListPlayer) ;
-                            action="add";
-                            player = prompter.displayPlayers(players, action);
-                            if (!playersNoAvailable.contains(player)) {
-                                playersNoAvailable.add(player);
-                                team.addPlayerToTeam(player);
-                            } else {
-                                boolean isInTheTeam;
-                                isInTheTeam = team.getTeamPlayers().contains(player);
-                                prompter.playerNoAvailable(isInTheTeam);
-                            }
-                        } else prompter.playerLimitReached();
+                                TreeSet<Player> treeSetListPlayer = new TreeSet<>(List.of(Players.load()));
+                                List<Player> players = new ArrayList<>(treeSetListPlayer);
+                                action = "add";
+                                player = prompter.displayPlayers(players, action);
+                                if (!playersNoAvailable.contains(player)) {
+                                    playersNoAvailable.add(player);
+                                    team.addPlayerToTeam(player);
+                                } else {
+                                    boolean isInTheTeam;
+                                    isInTheTeam = team.getTeamPlayers().contains(player);
+                                    prompter.playerNoAvailable(isInTheTeam);
+                                }
+                            } else prompter.playerLimitReached();
+                        }
+                    }else{
+                        prompter.limitTeamsReached();
+
                     }
                     break;
                 case "remove":
@@ -58,7 +65,7 @@ public class LeagueManager {
                     }else {
                         Team teamToRemovePlayer;
                         Player playerToRemove;
-                        teamToRemovePlayer = prompter.displayTeams(allTeams, "");
+                        teamToRemovePlayer = prompter.displayTeams(allTeams);
                         if (!teamToRemovePlayer.getTeamPlayers().isEmpty()) {
                             action= "remove";
                             TreeSet<Player> treeSetListTeamPlayer= new TreeSet<>(teamToRemovePlayer.getTeamPlayers());
@@ -76,7 +83,7 @@ public class LeagueManager {
                         prompter.teamsNotAvailable(action);
                     }else {
                         Team teamToReportPlayers;
-                        teamToReportPlayers = prompter.displayTeams(allTeams, "");
+                        teamToReportPlayers = prompter.displayTeams(allTeams);
                         if (!teamToReportPlayers.getTeamPlayers().isEmpty()) {
                             reportMap= teamToReportPlayers.createReport(teamToReportPlayers);
                             prompter.displayReport(reportMap);
@@ -101,7 +108,7 @@ public class LeagueManager {
                     }else {
                         action="roster";
                         Team teamToRoster;
-                        teamToRoster = prompter.displayTeams(allTeams,"");
+                        teamToRoster = prompter.displayTeams(allTeams);
                         if (!teamToRoster.getTeamPlayers().isEmpty()) {
                             TreeSet<Player> treeSetListTeamPlayer= teamToRoster.getTeamPlayers();
                             List<Player> listTeamPlayer= new ArrayList<>(treeSetListTeamPlayer);
@@ -116,10 +123,14 @@ public class LeagueManager {
                     action= "build";
                     if(allTeams.getAllTeams().isEmpty()){
                         allTeams.teamBuilding();
-                        prompter.displayTeams(allTeams,action);
+                        List<Team> teamsList = new ArrayList<>(allTeams.getAllTeams());
+                        prompter.displayTeams(teamsList,action);
                     }else {
                         prompter.validationOfTeamsCreated();
                     }
+                    break;
+                case "wait":
+                    prompter.addPlayerToWaitingList(waitList);
                     break;
                 default:
                     break;
