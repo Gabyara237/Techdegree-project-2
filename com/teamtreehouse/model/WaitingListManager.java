@@ -1,15 +1,16 @@
 package com.teamtreehouse.model;
 
-import java.util.TreeSet;
+import java.util.List;
+
 
 public class WaitingListManager {
-    private TreeSet<Player> mWaitList;
+    private List<Player> mWaitList;
 
-    public WaitingListManager(TreeSet<Player> waitList) {
+    public WaitingListManager(List<Player> waitList) {
         mWaitList = waitList;
     }
 
-    public TreeSet<Player> getWaitList() {
+    public List<Player> getWaitList() {
         return mWaitList;
     }
 }

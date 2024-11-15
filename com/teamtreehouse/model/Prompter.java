@@ -4,6 +4,7 @@ import java.util.*;
 
 public class Prompter {
 
+
     Scanner scanner = new Scanner(System.in);
 
     public String displayMenu() {
@@ -16,7 +17,8 @@ public class Prompter {
                 "Balance - View the League Balance Report.%n "+
                 "Roster - View roster.%n "+
                 "Build - Automatically Build Teams.%n "+
-                "Wait - Add player to player waiting list"+
+                "Wait - Add player to player waiting list.%n "+
+                "Rotate - Remove a player from the team and add a player from the waiting list. %n "+
                 "Quit - Exits the program. %n%n Select an option: ");
 
         option = scanner.nextLine();
@@ -101,8 +103,35 @@ public class Prompter {
     }
 
 
-    public void playerRemoved() {
+    public void playerRemoved(Team team, String action, WaitingListManager waitList) {
+        TreeSet<Player> teamPlayers;
+        Player player;
+        int attempts=0;
+        int option=0;
         System.out.printf("Player successfully removed from the team!.%n");
+        if (action.equals("remove")) {
+            if(!waitList.getWaitList().isEmpty()) {
+                System.out.printf("There are players on the waiting list. Do you want to add the next player on the list to the team.%n%n 1.) Yes %n 2.) No %n%n Select an option: ");
+                do {
+                    if (attempts > 0) {
+                        System.out.printf("Option does not exist, select an option from 1 to 2. %n");
+                    }
+                    option = scanner.nextInt();
+                    attempts++;
+                } while (option < 1 || option > 2);
+                scanner.nextLine();
+
+                if(option==1){
+                    addPlayerFromWaitingList(waitList,team);
+                }
+            }
+        }else{
+            if(!waitList.getWaitList().isEmpty()) {
+                addPlayerFromWaitingList(waitList, team);
+            }else{
+                System.out.printf("There are no player on the waiting list.%n");
+            }
+        }
     }
 
     public void noPlayersToRemove(String teamName) {
@@ -142,6 +171,7 @@ public class Prompter {
             teamName= team.getKey();
             List<Integer> listCounts= team.getValue();
             System.out.printf("%n%n *** Team: %s *** %n%nTotal number of players: %d %nExperienced players: %d %nInexperienced players: %d %n",teamName,listCounts.get(0)+listCounts.get(1), listCounts.get(0),listCounts.get(1));
+
         }
     }
 
@@ -162,7 +192,7 @@ public class Prompter {
             } else {
                 experience = "inexperienced";
             }
-            System.out.printf("%d.) %s %s (%s inches - %s ) %n ", num, player.getLastName(), player.getFirstName() , player.getHeightInInches(), experience);
+            System.out.printf("%d.) %s %s (%s inches - %s ) %n", num, player.getLastName(), player.getFirstName() , player.getHeightInInches(), experience);
         }
     }
 
@@ -187,7 +217,7 @@ public class Prompter {
         lastName = scanner.nextLine();
         System.out.print("What is the player's height in inches? ");
         heightInInches = scanner.nextInt();
-        System.out.printf("The player is: %n 1.) Experienced. %n 2)Inexperienced. %n Select an option: ");
+        System.out.printf("The player is: %n 1.) Experienced. %n 2.) Inexperienced. %n Select an option: ");
         do {
             if (attempts>0){
                 System.out.printf("Option does not exist, select an option from 1 to 2. %n");
@@ -203,5 +233,15 @@ public class Prompter {
         Player player = new Player(firstName,lastName,heightInInches,previousExperience );
         waitList.getWaitList().add(player);
         System.out.printf("%n Player %s %s successfully created" ,player.getFirstName(), player.getLastName());
+    }
+
+    private void addPlayerFromWaitingList(WaitingListManager waitList, Team team){
+        TreeSet<Player> teamPlayers;
+        Player player;
+        teamPlayers= team.getTeamPlayers();
+        player = waitList.getWaitList().removeFirst();
+        teamPlayers.add(player);
+        System.out.printf("The player %s %s, who was next on the waiting list, has been successfully added to the team.%n", player.getFirstName(),player.getLastName());
+
     }
 }

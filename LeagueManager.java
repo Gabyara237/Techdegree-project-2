@@ -20,7 +20,7 @@ public class LeagueManager {
         String action;
         Map<String, TreeSet<Player>> reportMap;
         Map<String, List<Integer>> balanceMap;
-        TreeSet<Player> waitListSet = new TreeSet<>();
+        List<Player> waitListSet = new ArrayList<>();
         WaitingListManager waitList = new WaitingListManager(waitListSet);
 
         do {
@@ -58,20 +58,24 @@ public class LeagueManager {
 
                     }
                     break;
-                case "remove":
+                case "remove", "rotate":
                     if(allTeams.getAllTeams().isEmpty()){
-                        action="to remove players";
+                        action="remove players";
                         prompter.teamsNotAvailable(action);
                     }else {
                         Team teamToRemovePlayer;
                         Player playerToRemove;
                         teamToRemovePlayer = prompter.displayTeams(allTeams);
                         if (!teamToRemovePlayer.getTeamPlayers().isEmpty()) {
-                            action= "remove";
+                            if(choice.equals("remove")){
+                                action="remove";
+                            }else{
+                                action="rotate";
+                            }
                             TreeSet<Player> treeSetListTeamPlayer= new TreeSet<>(teamToRemovePlayer.getTeamPlayers());
                             List<Player> listTeamPlayer= new ArrayList<>(treeSetListTeamPlayer);
                             playerToRemove = prompter.displayPlayers(listTeamPlayer, action);
-                            teamToRemovePlayer.removePlayerToTeam(playerToRemove);
+                            teamToRemovePlayer.removePlayerToTeam(playerToRemove, teamToRemovePlayer,action,waitList);
                         } else {
                             prompter.noPlayersToRemove(teamToRemovePlayer.getTeamName());
                         }
@@ -137,5 +141,6 @@ public class LeagueManager {
             }
         } while (!choice.equals("quit"));
     }
+
 
 }

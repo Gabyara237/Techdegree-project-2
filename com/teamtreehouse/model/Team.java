@@ -43,9 +43,10 @@ public class Team implements Comparable<Team> {
         return sizeTeam >= 11;
     }
 
-    public void removePlayerToTeam(Player playerToRemove) {
+    public void removePlayerToTeam(Player playerToRemove, Team team, String action, WaitingListManager waitList) {
         mTeamPlayers.remove(playerToRemove);
-        prompter.playerRemoved();
+        prompter.playerRemoved(team,action,waitList);
+
     }
 
     public Map<String, TreeSet<Player>> createReport(Team team){
