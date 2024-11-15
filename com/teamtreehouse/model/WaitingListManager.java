@@ -4,7 +4,7 @@ import java.util.List;
 
 
 public class WaitingListManager {
-    private List<Player> mWaitList;
+    private final List<Player> mWaitList;
 
     public WaitingListManager(List<Player> waitList) {
         mWaitList = waitList;

@@ -1,7 +1,6 @@
 package com.teamtreehouse.model;
 
 import java.io.Serializable;
-import java.util.TreeSet;
 
 public class Player implements Comparable<Player>, Serializable {
   private static final long serialVersionUID = 1L;
@@ -45,26 +44,5 @@ public class Player implements Comparable<Player>, Serializable {
     }
   }
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (!(o instanceof Player)) return false;
 
-    Player player = (Player) o;
-
-    if (heightInInches != player.heightInInches) return false;
-    if (previousExperience != player.previousExperience) return false;
-    if (!firstName.equals(player.firstName)) return false;
-    return lastName.equals(player.lastName);
-
-  }
-
-  @Override
-  public int hashCode() {
-    int result = firstName.hashCode();
-    result = 31 * result + lastName.hashCode();
-    result = 31 * result + heightInInches;
-    result = 31 * result + (previousExperience ? 1 : 0);
-    return result;
-  }
 }

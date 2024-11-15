@@ -142,6 +142,7 @@ public class LeagueManager {
                     prompter.addPlayerToWaitingList(waitList);
                     break;
                 default:
+                    prompter.invalidOption();
                     break;
             }
         } while (!choice.equals("quit"));
