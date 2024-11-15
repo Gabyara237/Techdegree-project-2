@@ -1,9 +1,25 @@
 package com.teamtreehouse.model;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class TeamsManager {
     private TreeSet<Team> allTeams = new TreeSet<>();
+
+
+    public void teamBuilding() {
+
+        List<String> teamsName = Arrays.asList("Falcons"," Bears", "Sharks");
+        List<String> coachName = Arrays.asList("Max", "Sam", "Zoe");
+        for (int i=0; i<3; i++ ) {
+            TreeSet<Player> teamsPlayers= new TreeSet<Player>();
+            Team team = new Team(teamsName.get(i),coachName.get(i),teamsPlayers, "Team " + teamsName.get(i) + " coached by " + coachName.get(i) + " created.");
+            team.addPlayersAutomatically(teamsPlayers);
+
+            allTeams.add(team);
+
+        }
+    }
 
     public TreeSet<Team> getAllTeams() {
         return allTeams;

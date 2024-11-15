@@ -15,6 +15,7 @@ public class Prompter {
                 "Report - View a report of a team by height.%n " +
                 "Balance - View the League Balance Report.%n "+
                 "Roster - View roster.%n "+
+                "Build - Automatically Build Teams.%n "+
                 "Quit - Exits the program. %n%n Select an option: ");
 
         option = scanner.nextLine();
@@ -39,16 +40,18 @@ public class Prompter {
 
     }
 
-    public Team displayTeams(TeamsManager allTeams) {
+    public Team displayTeams(TeamsManager allTeams, String action) {
 
         TreeSet<Team> teams = allTeams.getAllTeams();
         List<Team> teamsList = new ArrayList<>(teams);
         String teamSelected;
         int num = 0;
         int option;
-
-        System.out.printf("Available teams: %n");
-
+        if (action.equals("build")){
+            System.out.printf("Successfully created teams! %n");
+        }else {
+            System.out.printf("Available teams: %n");
+        }
         for (Team team : teams) {
             num++;
             System.out.printf("%d.) %s %n", num, team.getDescription());
@@ -154,5 +157,9 @@ public class Prompter {
             }
             System.out.printf("%d.) %s %s (%s inches - %s ) %n ", num, player.getLastName(), player.getFirstName() , player.getHeightInInches(), experience);
         }
+    }
+
+    public void validationOfTeamsCreated() {
+        System.out.print("%nThere must be no previously created teams to use this option.%n%n" );
     }
 }

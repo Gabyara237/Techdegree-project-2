@@ -32,7 +32,7 @@ public class LeagueManager {
                         action="add players";
                         prompter.teamsNotAvailable(action);
                     }else {
-                        Team team = prompter.displayTeams(allTeams);
+                        Team team = prompter.displayTeams(allTeams,"");
                         Player player;
                         if (!team.completeTeam()) {
 
@@ -58,7 +58,7 @@ public class LeagueManager {
                     }else {
                         Team teamToRemovePlayer;
                         Player playerToRemove;
-                        teamToRemovePlayer = prompter.displayTeams(allTeams);
+                        teamToRemovePlayer = prompter.displayTeams(allTeams, "");
                         if (!teamToRemovePlayer.getTeamPlayers().isEmpty()) {
                             action= "remove";
                             TreeSet<Player> treeSetListTeamPlayer= new TreeSet<>(teamToRemovePlayer.getTeamPlayers());
@@ -76,7 +76,7 @@ public class LeagueManager {
                         prompter.teamsNotAvailable(action);
                     }else {
                         Team teamToReportPlayers;
-                        teamToReportPlayers = prompter.displayTeams(allTeams);
+                        teamToReportPlayers = prompter.displayTeams(allTeams, "");
                         if (!teamToReportPlayers.getTeamPlayers().isEmpty()) {
                             reportMap= teamToReportPlayers.createReport(teamToReportPlayers);
                             prompter.displayReport(reportMap);
@@ -101,7 +101,7 @@ public class LeagueManager {
                     }else {
                         action="roster";
                         Team teamToRoster;
-                        teamToRoster = prompter.displayTeams(allTeams);
+                        teamToRoster = prompter.displayTeams(allTeams,"");
                         if (!teamToRoster.getTeamPlayers().isEmpty()) {
                             TreeSet<Player> treeSetListTeamPlayer= teamToRoster.getTeamPlayers();
                             List<Player> listTeamPlayer= new ArrayList<>(treeSetListTeamPlayer);
@@ -110,6 +110,15 @@ public class LeagueManager {
                         } else {
                             prompter.noPlayers(teamToRoster.getTeamName());
                         }
+                    }
+                    break;
+                case "build":
+                    action= "build";
+                    if(allTeams.getAllTeams().isEmpty()){
+                        allTeams.teamBuilding();
+                        prompter.displayTeams(allTeams,action);
+                    }else {
+                        prompter.validationOfTeamsCreated();
                     }
                     break;
                 default:

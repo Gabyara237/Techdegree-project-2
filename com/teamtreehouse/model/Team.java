@@ -1,9 +1,6 @@
 package com.teamtreehouse.model;
 
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
-import java.util.TreeSet;
+import java.util.*;
 
 public class Team implements Comparable<Team> {
     private String mTeamName;
@@ -77,4 +74,19 @@ public class Team implements Comparable<Team> {
     }
 
 
+    public void addPlayersAutomatically(TreeSet<Player> teamsPlayers) {
+        TreeSet<Player> treeSetListPlayer= new TreeSet<>(List.of(Players.load()));
+        List<Player> players = new ArrayList<>(treeSetListPlayer) ;
+        Random random = new Random();
+        int numRandom;
+        Set<Integer> notAvailable = new HashSet<>();
+        do{
+            numRandom = random.nextInt(players.size());
+            if(!notAvailable.contains(numRandom) ){
+                notAvailable.add(numRandom);
+                teamsPlayers.add(players.get(numRandom));
+            }
+        }while(teamsPlayers.size()<11);
+
+    }
 }
